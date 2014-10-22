@@ -1,19 +1,24 @@
 package example.app.resource;
 
+import java.util.Optional;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
-@Path("/hello")
+import com.google.inject.Inject;
+
+@Path("/")
 public class HelloResource {
 
+    @Inject
+    private String message;
+
     @GET
-    @Path("{name}")
+    @Path("hello")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response hello(@PathParam("name") String name) {
-        return Response.ok("hello, " + name).build();
+    public String hello() {
+        return Optional.ofNullable(message).orElse("NULL!");
     }
 }
