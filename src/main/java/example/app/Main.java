@@ -5,6 +5,11 @@ import java.net.URI;
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
+import example.app.resource.HelloResource;
+
 public class Main {
 
     public static void main(String... args) {
@@ -12,9 +17,9 @@ public class Main {
 
         ResourceConfig config = new ResourceConfig();
 
-        config.packages(true, "example.app.resource");
+        Injector injector = Guice.createInjector(new MyModule());
+        config.register(injector.getInstance(HelloResource.class));
 
-        // config.register(String.class).
         JdkHttpServerFactory.createHttpServer(uri, config);
         System.out.println("server started.");
     }
